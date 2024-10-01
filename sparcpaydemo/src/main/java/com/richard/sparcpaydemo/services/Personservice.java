@@ -32,21 +32,21 @@ public class Personservice {
         
         Query query = new Query();
     
-    if (firstName != null && !firstName.isEmpty()) {
-        query.addCriteria(Criteria.where("firstName").regex(firstName, "i"));
-    }
-    
-    if (lastName != null && !lastName.isEmpty()) {
-        query.addCriteria(Criteria.where("lastName").regex(lastName, "i"));
-    }
-    
-    if (dateOfBirth != null) {
-        query.addCriteria(Criteria.where("dateOfBirth").is(dateOfBirth));
-    }
-    
-    if (gender != null && !gender.isEmpty()) {
-        query.addCriteria(Criteria.where("gender").is(gender));
-    }
+        if (firstName != null && !firstName.isEmpty()) {
+            query.addCriteria(Criteria.where("firstName").regex(firstName, "i"));
+        }
+        
+        if (lastName != null && !lastName.isEmpty()) {
+            query.addCriteria(Criteria.where("lastName").regex(lastName, "i"));
+        }
+        
+        if (dateOfBirth != null) {
+            query.addCriteria(Criteria.where("dateOfBirth").is(dateOfBirth));
+        }
+        
+        if (gender != null && !gender.isEmpty()) {
+            query.addCriteria(Criteria.where("gender").is(gender));
+        }
 
         return mt.find(query,Person.class,"Persons");
     }

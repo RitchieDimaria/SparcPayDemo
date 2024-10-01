@@ -36,17 +36,19 @@ public class Personcontroller {
             @RequestParam(required = false) String lastName,
             @RequestParam(required = false) LocalDate dateOfBirth,
             @RequestParam(required = false) String gender) {
-                
+
         return service.findAllPersons(firstName,lastName,dateOfBirth,gender);
     }
 
     @DeleteMapping("/deletePerson/{id}")
     public void deletePerson(@PathVariable String id){
+        System.out.println(id);
         service.delete(id);
     }
 
     @PutMapping("/updatePerson")
     public Person updatePerson(@RequestBody Person p){
+        System.out.println(p);
         return service.updatePerson(p.getId(), p);
     }
 }

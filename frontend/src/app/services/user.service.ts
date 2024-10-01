@@ -24,4 +24,10 @@ export class UserService {
 
     return this.http.get<any[]>(`${this.apiUrl}/findPerson`, { params });
   }
+
+  deletePerson(id:string):Observable<any> {
+    console.log(id)
+    return this.http.delete(`${this.apiUrl}/deletePerson/${id}`); 
+  }
+
 }
