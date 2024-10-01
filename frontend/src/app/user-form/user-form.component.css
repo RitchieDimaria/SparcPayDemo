@@ -1,0 +1,125 @@
+
+.success-message {
+background-color: #d4edda;
+color: #155724;
+border: 1px solid #c3e6cb;
+border-radius: 4px;
+padding: 10px;
+margin-bottom: 15px;
+}
+
+.error-message {
+background-color: #f8d7da;
+color: #721c24;
+border: 1px solid #f5c6cb;
+border-radius: 4px;
+padding: 10px;
+margin-bottom: 15px;
+}
+.form-container {
+max-width: 400px;
+margin: 2rem auto;
+padding: 2rem;
+background: white;
+border-radius: 10px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.form-title {
+text-align: center;
+color: #6c5ce7;
+margin-bottom: 1.5rem;
+}
+.input-group {
+position: relative;
+margin-bottom: 1rem;
+}
+.input-icon {
+position: absolute;
+left: 10px;
+top: 50%;
+transform: translateY(-50%);
+}
+input {
+width: 100%;
+padding: 10px 10px 10px 35px;
+border: 1px solid #e0e0e0;
+border-radius: 5px;
+font-size: 16px;
+}
+.radio-group {
+margin-bottom: 1rem;
+}
+.radio-options {
+display: flex;
+justify-content: space-around;
+}
+.radio-options label {
+display: flex;
+align-items: center;
+color: #666;
+}
+input[type="radio"] {
+margin-right: 5px;
+width: auto;
+}
+.button-group {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+.submit-btn, .cancel-btn {
+width: 100%;
+padding: 10px;
+border: none;
+border-radius: 5px;
+font-size: 16px;
+cursor: pointer;
+transition: background-color 0.3s;
+}
+.submit-btn {
+background-color: #6c5ce7;
+color: white;
+}
+.submit-btn:hover {
+background-color: #5b4cdb;
+}
+.submit-btn:disabled {
+background-color: #a29bfe;
+cursor: not-allowed;
+}
+.cancel-btn {
+background-color: #f0f0f0;
+color: #333;
+}
+.cancel-btn:hover {
+background-color: #e0e0e0;
+}
+/* Custom styles for the datepicker */
+::ng-deep .bs-datepicker {
+box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+border: none;
+}
+::ng-deep .bs-datepicker-container {
+padding: 10px;
+}
+::ng-deep .bs-datepicker-head {
+background-color: #6c5ce7;
+border-radius: 8px 8px 0 0;
+}
+::ng-deep .bs-datepicker-body {
+border: none;
+}
+::ng-deep .bs-datepicker-body table td {
+color: #333;
+}
+::ng-deep .bs-datepicker-body table td.selected span {
+background-color: #6c5ce7 !important;
+color: white !important;
+}
+::ng-deep .bs-datepicker-body table td span.selected {
+background-color: #6c5ce7 !important;
+}
+::ng-deep .bs-datepicker-body table td.week span {
+color: #6c5ce7;
+}
