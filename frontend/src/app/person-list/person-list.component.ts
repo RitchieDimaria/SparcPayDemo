@@ -25,7 +25,12 @@ export class PersonListComponent implements OnInit {
   showEditUserForm = false; // Variables for user edit form
   personToEdit: any = null;
 
-  persons$: Observable<any[]> = of([]);
+  page: any;
+  persons: any[] = [];
+  currentPage = 1;
+  pageSize = 10;
+  totalElements = 0;
+  totalPages = 0;
   filterCriteria = {
     firstName: '',
     lastName: '',
@@ -40,10 +45,20 @@ export class PersonListComponent implements OnInit {
   }
 
   loadPersons() {
-    this.persons$ = this.userService.findPersons(this.filterCriteria); 
+    console.log(this.currentPage)
+    this.userService.findPersons(this.filterCriteria,this.currentPage,10)
+    .subscribe( res => {
+    console.log(res)
+
+    this.page = res
+    this.persons = this.page.persons;
+    this.totalElements = this.page.totalEntries;
+    this.totalPages = this.page.totalPages; }
+    );
   }
 
   onFilterChange() {
+    this.currentPage = 1;
     this.loadPersons();
   }
 
@@ -68,6 +83,21 @@ export class PersonListComponent implements OnInit {
   closeDeleteConfirmation(){
     this.showDeleteConfirmation = false;
     this.personToDelete = null;
+  }
+
+
+  nextPage() {
+    if (this.currentPage <= this.totalPages - 1) {
+      this.currentPage++;
+      this.loadPersons();
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+      this.loadPersons();
+    }
   }
 
 }

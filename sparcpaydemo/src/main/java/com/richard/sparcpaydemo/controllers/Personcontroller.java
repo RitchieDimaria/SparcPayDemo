@@ -2,7 +2,6 @@
 package com.richard.sparcpaydemo.controllers;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.richard.sparcpaydemo.models.Page;
 import com.richard.sparcpaydemo.models.Person;
 import com.richard.sparcpaydemo.services.Personservice;
 
@@ -31,13 +31,14 @@ public class Personcontroller {
     }
 
     @GetMapping("/findPerson")
-    public List<Person> findPersons(
+    public Page findPersons(
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
             @RequestParam(required = false) LocalDate dateOfBirth,
-            @RequestParam(required = false) String gender) {
-
-        return service.findAllPersons(firstName,lastName,dateOfBirth,gender);
+            @RequestParam(required = false) String gender,
+            @RequestParam(defaultValue= "10") int size,
+            @RequestParam() int currpage) {
+        return service.findAllPersons(firstName,lastName,dateOfBirth,gender,size,currpage);
     }
 
     @DeleteMapping("/deletePerson/{id}")

@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import com.richard.sparcpaydemo.models.Page;
 import com.richard.sparcpaydemo.models.Person;
 
 @Service
@@ -28,7 +29,7 @@ public class Personservice {
         mt.remove(query, Person.class, "Persons");
     }
 
-    public List<Person> findAllPersons(String firstName,String lastName,LocalDate dateOfBirth,String gender) {
+    public Page findAllPersons(String firstName,String lastName,LocalDate dateOfBirth,String gender, int size,int page) {
         
         Query query = new Query();
     
@@ -48,7 +49,14 @@ public class Personservice {
             query.addCriteria(Criteria.where("gender").is(gender));
         }
 
-        return mt.find(query,Person.class,"Persons");
+        long total = mt.count(query, Person.class,"Persons");
+
+        query.skip((long) (page - 1) * size);
+        query.limit(size);
+        int totalPages = (int) Math.ceil((double) total / size);
+        List<Person> people = mt.find(query,Person.class,"Persons");
+
+        return new Page(people,page,(int)total,totalPages);
     }
 
     public Person updatePerson(String id, Person updatedPerson) {

@@ -14,15 +14,19 @@ export class UserService {
     return this.http.post(`${this.apiUrl}/insertPerson`, userData);
   }
 
-  findPersons(filterCriteria: any): Observable<any[]> {
-    let params = new HttpParams();
+  findPersons(filterCriteria: any,currPage:number, size: number = 10): Observable<any[]> {
+    let params = new HttpParams()
+    .set('currpage', currPage.toString())
+    .set('size', size.toString());
+
     Object.keys(filterCriteria).forEach(key => {
       if (filterCriteria[key]) {
         params = params.append(key, filterCriteria[key]);
       }
     });
 
-    return this.http.get<any[]>(`${this.apiUrl}/findPerson`, { params });
+    console.log("test")
+    return this.http.get<any>(`${this.apiUrl}/findPerson`, { params });
   }
 
   updatePerson(personData: any): Observable<any> {
