@@ -5,21 +5,25 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { UserFormComponent } from '../user-form/user-form.component';
 
 @Component({
   selector: 'app-person-list',
   templateUrl: './person-list.component.html',
   styleUrls: ['./person-list.component.css'],
   standalone:true,
-  imports:[FormsModule,CommonModule, FontAwesomeModule]
+  imports:[FormsModule,CommonModule, FontAwesomeModule,UserFormComponent]
 })
 export class PersonListComponent implements OnInit {
 
   faEdit = faEdit;
   faTrashAlt = faTrashAlt;
 
-  showDeleteConfirmation = false;
+  showDeleteConfirmation = false; // Variables for deleting a user
   personToDelete: any = null;
+
+  showEditUserForm = false; // Variables for user edit form
+  personToEdit: any = null;
 
   persons$: Observable<any[]> = of([]);
   filterCriteria = {
@@ -36,7 +40,7 @@ export class PersonListComponent implements OnInit {
   }
 
   loadPersons() {
-    this.persons$ = this.userService.findPersons(this.filterCriteria);
+    this.persons$ = this.userService.findPersons(this.filterCriteria); 
   }
 
   onFilterChange() {
@@ -44,8 +48,9 @@ export class PersonListComponent implements OnInit {
   }
 
   onEdit(person: any) {
-    // Implement edit logic here
     console.log('Edit clicked for:', person);
+    this.showEditUserForm = true;
+    this.personToEdit = person;
   }
 
   onDelete(person: any) {
@@ -58,11 +63,6 @@ export class PersonListComponent implements OnInit {
     if (this.personToDelete) {
       this.userService.deletePerson(this.personToDelete.id).subscribe();
       this.closeDeleteConfirmation();
-      setInterval(() => {
-        this.loadPersons();
-        //run code
-
-    },500)
     }
   }
   closeDeleteConfirmation(){

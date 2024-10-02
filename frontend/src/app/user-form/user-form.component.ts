@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Input,OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -14,15 +14,18 @@ import { of } from 'rxjs';
   imports: [FormsModule, CommonModule, BsDatepickerModule],
   styleUrls: ['./user-form.component.css'],
 })
-export class UserFormComponent {
+export class UserFormComponent implements OnInit{
+
+  @Input() editMode: Boolean = false;
+  @Input() personToEdit:any = "None";
   constructor(private router: Router, private userService:UserService) {}
   
-
   user = {
-    firstName: '',
+    firstName: '' ,
     lastName: '',
     dateOfBirth: '',
-    gender: ''
+    gender: '',
+    id:null
   };
   message = ''
   error = false
@@ -34,29 +37,66 @@ export class UserFormComponent {
     showWeekNumbers: false
   };
 
+  ngOnInit() {
+    if(this.editMode){
+      this.user.firstName = this.personToEdit.firstName;
+      this.user.lastName = this.personToEdit.lastName;
+      this.user.dateOfBirth = this.personToEdit.dateOfBirth;
+      this.user.gender = this.personToEdit.gender;
+    }
+
+  }
+
   onSubmit() {
-    console.log('Form submitted', this.user); // From Submission
+    
+    if(this.editMode){ // UPDATE PERSON CALL
+      this.user.id = this.personToEdit.id
+      this.userService.updatePerson(this.user).pipe(
+        tap(response => {
+          console.log('User Updated successfully', response);
+          this.message = 'User successfully Updated!';
+          this.error = false;
+  
+          this.resetForm();
+        }),
+        catchError(error => {
+          console.error('Error Updating user', error);
+          this.message = 'An error occurred. Please try again.';
+          this.error = true;
+          return of(null);
+        })
+      ).subscribe();
 
-    this.userService.createUser(this.user).pipe(
-      tap(response => {
-        console.log('User created successfully', response);
-        this.message = 'User successfully added!';
-        this.error = false;
+    }
+    else { // CREATE PERSON CALL
 
-        this.resetForm();
-      }),
-      catchError(error => {
-        console.error('Error creating user', error);
-        this.message = 'An error occurred. Please try again.';
-        this.error = true;
-        return of(null);
-      })
-    ).subscribe();
+      this.userService.createUser(this.user).pipe(
+        tap(response => {
+          console.log('User created successfully', response);
+          this.message = 'User successfully added!';
+          this.error = false;
+  
+          this.resetForm();
+        }),
+        catchError(error => {
+          console.error('Error creating user', error);
+          this.message = 'An error occurred. Please try again.';
+          this.error = true;
+          return of(null);
+        })
+      ).subscribe();
+
+    }
+
   }
 
   onCancel() {
-    
-    this.router.navigate(['/']); //Need to adjust later so it goes to appropriate route
+
+    let s = "/"
+    if (this.editMode) {
+      s = "/list"
+    }
+    this.router.navigate(["/"]);
     console.log('Form cancelled');
   }
 
@@ -65,7 +105,8 @@ export class UserFormComponent {
       firstName: '',
       lastName: '',
       dateOfBirth: '',
-      gender: ''
+      gender: '',
+      id: null
     };
   }
 }

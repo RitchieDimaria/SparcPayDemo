@@ -37,6 +37,8 @@
             </div>
           </div>
     </div>
+
+    
     <div class="delete-confirmation" *ngIf="showDeleteConfirmation">
         <div class="delete-confirmation-content">
           <p>Are you sure you want to delete {{personToDelete?.firstName}} {{personToDelete?.lastName}}?</p>
@@ -45,5 +47,10 @@
             <button class="confirm-delete-button" (click)="onConfirmDelete()">Delete</button>
           </div>
         </div>
+      </div>
+
+      <div class="edit-user-form" *ngIf="showEditUserForm">
+        <app-user-form [editMode] = "true" [personToEdit] = "personToEdit">
+        </app-user-form>
       </div>
   </div>

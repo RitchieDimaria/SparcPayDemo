@@ -25,6 +25,10 @@ export class UserService {
     return this.http.get<any[]>(`${this.apiUrl}/findPerson`, { params });
   }
 
+  updatePerson(personData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/updatePerson`, personData);
+  }
+
   deletePerson(id:string):Observable<any> {
     console.log(id)
     return this.http.delete(`${this.apiUrl}/deletePerson/${id}`); 
