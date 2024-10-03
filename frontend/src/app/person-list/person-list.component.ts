@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ChangeDetectorRef} from '@angular/core';
 import { UserService } from '../services/user.service';
 import { Observable, of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
@@ -38,17 +38,15 @@ export class PersonListComponent implements OnInit {
     gender: ''
   };
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.loadPersons();
   }
 
   loadPersons() {
-    console.log(this.currentPage)
     this.userService.findPersons(this.filterCriteria,this.currentPage,10)
     .subscribe( res => {
-    console.log(res)
 
     this.page = res
     this.persons = this.page.persons;
@@ -63,13 +61,11 @@ export class PersonListComponent implements OnInit {
   }
 
   onEdit(person: any) {
-    console.log('Edit clicked for:', person);
     this.showEditUserForm = true;
     this.personToEdit = person;
   }
 
   onDelete(person: any) {
-    console.log('Delete clicked for:', person);
     this.personToDelete = person;
     this.showDeleteConfirmation = true;
   }
@@ -77,6 +73,7 @@ export class PersonListComponent implements OnInit {
   onConfirmDelete() {
     if (this.personToDelete) {
       this.userService.deletePerson(this.personToDelete.id).subscribe();
+      this.persons = this.persons.filter(item => item.id !== this.personToDelete.id);
       this.closeDeleteConfirmation();
     }
   }
@@ -98,6 +95,15 @@ export class PersonListComponent implements OnInit {
       this.currentPage--;
       this.loadPersons();
     }
+  }
+
+  closeUpdateForm() {
+    this.showEditUserForm = false;
+    this.personToEdit = null;
+    this.loadPersons();
+  }
+  removeUpdateForm = () => {
+    this.closeUpdateForm()
   }
 
 }

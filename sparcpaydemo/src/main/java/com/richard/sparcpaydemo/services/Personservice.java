@@ -21,12 +21,29 @@ public class Personservice {
     }
 
     public void insert(Person p) {
-        mt.insert(p,"Persons");
+
+        try{
+
+            mt.insert(p,"Persons");
+
+        }catch(Exception e){
+
+            System.err.println("Error saving user" + e.getMessage() );
+            throw new RuntimeException("Failed to process user", e);
+
+        }
     }
 
     public void delete(String id){
-        Query query = new Query(Criteria.where("_id").is(id));
-        mt.remove(query, Person.class, "Persons");
+        
+        try {
+            Query query = new Query(Criteria.where("_id").is(id));
+            mt.remove(query, Person.class, "Persons");
+            
+        } catch (Exception e) {
+            System.err.println("Error deleting user" + e.getMessage() );
+            throw new RuntimeException("Failed to process user", e);
+        }
     }
 
     public Page findAllPersons(String firstName,String lastName,LocalDate dateOfBirth,String gender, int size,int page) {
@@ -50,11 +67,19 @@ public class Personservice {
         }
 
         long total = mt.count(query, Person.class,"Persons");
+        List<Person> people = null;
 
         query.skip((long) (page - 1) * size);
         query.limit(size);
         int totalPages = (int) Math.ceil((double) total / size);
-        List<Person> people = mt.find(query,Person.class,"Persons");
+        try {
+
+            people = mt.find(query,Person.class,"Persons");
+            
+        } catch (Exception e) {
+            System.err.println("Error deleting user" + e.getMessage() );
+            throw new RuntimeException("Failed to process user", e);
+        }
 
         return new Page(people,page,(int)total,totalPages);
     }
@@ -67,7 +92,12 @@ public class Personservice {
             .set("dateOfBirth", updatedPerson.getDateOfBirth())
             .set("gender", updatedPerson.getGender());
         
-        mt.updateFirst(query, update, Person.class, "Persons");
+        try {
+            mt.updateFirst(query, update, Person.class, "Persons");
+        } catch (Exception e) {
+            System.err.println("Error deleting user" + e.getMessage() );
+            throw new RuntimeException("Failed to process user", e);
+        }
         
         return mt.findById(id, Person.class, "Persons");
     }

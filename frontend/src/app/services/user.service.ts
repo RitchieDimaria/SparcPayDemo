@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8080'; // Replace with your actual API URL
+  private apiUrl = 'http://localhost:8080'; 
 
   constructor(private http: HttpClient) {}
 
@@ -24,8 +24,6 @@ export class UserService {
         params = params.append(key, filterCriteria[key]);
       }
     });
-
-    console.log("test")
     return this.http.get<any>(`${this.apiUrl}/findPerson`, { params });
   }
 

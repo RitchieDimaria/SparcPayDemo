@@ -4,6 +4,8 @@ package com.richard.sparcpaydemo.controllers;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +28,17 @@ public class Personcontroller {
     Personservice service;
 
     @PostMapping("/insertPerson")
-    public void insertPerson(@RequestBody Person p) {
-        service.insert(p);
+    public ResponseEntity<String> insertPerson(@RequestBody Person p) {
+        if(p.verifyPerson())
+        {
+            service.insert(p);
+            return null;
+        }
+        else {
+            return ResponseEntity
+            .status(HttpStatus.FORBIDDEN)
+            .body("Error Message");
+        }
     }
 
     @GetMapping("/findPerson")

@@ -23,4 +23,30 @@ public class Person {
         MALE, FEMALE
     } 
 
+    public Boolean verifyPerson(){
+        int flen = firstName.length();
+        int llen = lastName.length();
+
+        for (int i = 0; i < flen; i++) {
+            if ((Character.isLetter(firstName.charAt(i)) == false ^ firstName.charAt(i) == ' ')) {
+                return false;
+            }
+        }
+        for (int i = 0; i < llen; i++) {
+            if ((Character.isLetter(lastName.charAt(i)) == false) ^ lastName.charAt(i) == ' ') {
+                return false;
+            }
+        }
+        if(this.firstName == null 
+        || this.lastName == null 
+        || this.dateOfBirth == null 
+        || this.gender == null){
+            return false;
+        }
+        else {
+
+            return true;
+        }
+    }
+
 }

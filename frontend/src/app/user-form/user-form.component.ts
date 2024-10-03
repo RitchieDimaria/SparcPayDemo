@@ -17,7 +17,9 @@ import { of } from 'rxjs';
 export class UserFormComponent implements OnInit{
 
   @Input() editMode: Boolean = false;
-  @Input() personToEdit:any = "None";
+  @Input() personToEdit:any;
+  @Input() removeUpdateForm!: () => void;
+
   constructor(private router: Router, private userService:UserService) {}
   
   user = {
@@ -42,7 +44,6 @@ export class UserFormComponent implements OnInit{
       this.user.firstName = this.personToEdit.firstName;
       this.user.lastName = this.personToEdit.lastName;
       this.user.dateOfBirth = this.personToEdit.dateOfBirth;
-      this.user.gender = this.personToEdit.gender;
     }
 
   }
@@ -67,6 +68,8 @@ export class UserFormComponent implements OnInit{
         })
       ).subscribe();
 
+      this.removeUpdateForm()
+      this.editMode = false;
     }
     else { // CREATE PERSON CALL
 
@@ -94,9 +97,12 @@ export class UserFormComponent implements OnInit{
 
     let s = "/"
     if (this.editMode) {
-      s = "/list"
+      console.log("cancel")
+      this.removeUpdateForm()
     }
-    this.router.navigate(["/"]);
+    else{
+      this.router.navigate(["/"]);
+    }
     console.log('Form cancelled');
   }
 
@@ -108,5 +114,13 @@ export class UserFormComponent implements OnInit{
       gender: '',
       id: null
     };
+  }
+  validateNameInput(value: string, field: 'firstName' | 'lastName'): string {
+    const regex = /^[A-Za-z\s]*$/; // Allows only letters and spaces
+    if (!regex.test(value)) {
+      value = value.replace(/[^A-Za-z\s]/g, '');
+    }
+    this.user[field] = value;
+    return value;
   }
 }
